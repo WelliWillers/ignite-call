@@ -17,6 +17,11 @@ export const Header = styled('div', {
   },
 })
 
+export const AuthError = styled(Text, {
+  color: '#f75a68',
+  marginBottom: '$2'
+})
+
 export const ConnectBox = styled(Box, {
   marginTop: '$6',
   display: 'flex',
