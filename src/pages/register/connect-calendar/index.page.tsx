@@ -4,6 +4,7 @@ import { ArrowRight, Check } from "@phosphor-icons/react";
 import { ConnectItem, ConnectBox, AuthError } from "./styles";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function ConnectCalendar(){
 
@@ -12,10 +13,14 @@ export default function ConnectCalendar(){
 
   const hasAuthError = !!router.query.error
   const isSignedIn = session.status === 'authenticated'
-  
+
   async function handleConnectCalendar() {
-    signIn('google')
+    await signIn('google')
   }
+  
+  // async function handleNavigateToNextStep(){
+  //   await router.push('/register/time-intervals')
+  // }
 
   return (
     <Container>
@@ -55,8 +60,15 @@ export default function ConnectCalendar(){
             </AuthError>
           )
         }
-
-        <Button type="submit" size={"sm"} disabled={!isSignedIn}>
+        
+        {/* @ts-ignore */}
+        <Button 
+          as={Link}
+          href="/register/time-intervals"
+          type="submit" 
+          size={"sm"} 
+          disabled={!isSignedIn}
+        >
           Próximo passo 
           <ArrowRight />
         </Button>

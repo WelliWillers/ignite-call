@@ -6,7 +6,10 @@ const nextConfig = {
     'page.tsx',
     'api.ts',
     'api.tsx',
-  ]
+  ],
+  images: {
+    domains: ['https://lh3.googleusercontent.com/'],
+  }
 }
 
 module.exports = nextConfig
