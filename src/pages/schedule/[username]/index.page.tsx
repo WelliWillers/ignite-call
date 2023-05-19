@@ -34,11 +34,11 @@ export const getStaticPaths:GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const userName = String(params?.userName)
+  const username = String(params?.username)
 
   const user = await prisma.user.findUnique({
     where: {
-      username: userName
+      username: username
     }
   })
 
