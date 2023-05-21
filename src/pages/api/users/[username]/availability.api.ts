@@ -3,7 +3,6 @@
 import { prisma } from '@/lib/prisma'
 import dayjs from 'dayjs'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { setCookie } from 'nookies'
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -31,53 +30,56 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const referenceDate = dayjs(String(date))
-
   const isPastDate = referenceDate.endOf('day').isBefore(new Date())
 
-  if(isPastDate){
-    return res.status(201).json({possibleTimes: [], availableTimes: []})
+  if (isPastDate) {
+    return res.json({ possibleTimes: [], availableTimes: [] })
   }
 
   const userAvailability = await prisma.userTimeInterval.findFirst({
     where: {
       user_id: user.id,
-      week_day: referenceDate.get('day')
-    }
+      week_day: referenceDate.get('day'),
+    },
   })
 
-  if(!userAvailability){
-    return res.status(201).json({possibleTimes: [], availableTimes: []})
+  if (!userAvailability) {
+    return res.json({ possibleTimes: [], availableTimes: [] })
   }
 
-  const { time_end_in_minuts, time_start_in_minuts} = userAvailability
+  const { time_start_in_minuts, time_end_in_minuts } = userAvailability
 
-  const startHours = time_start_in_minuts / 60
-  const endHours = time_end_in_minuts / 60
+  const startHour = time_start_in_minuts / 60
+  const endHour = time_end_in_minuts / 60
 
-  const possibleTimes = Array.from({
-    length: endHours - startHours
-  }).map((_, i) => {
-    return startHours + i
-  })
+  const possibleTimes = Array.from({ length: endHour - startHour }).map(
+    (_, i) => {
+      return startHour + i
+    },
+  )
 
   const blockedTimes = await prisma.scheduling.findMany({
     select: {
-      date: true
+      date: true,
     },
     where: {
       userId: user.id,
       date: {
-        gte: referenceDate.set('hour', startHours).toDate(),
-        lte: referenceDate.set('hour', endHours).toDate(),
-      }
-    }
+        gte: referenceDate.set('hour', startHour).toDate(),
+        lte: referenceDate.set('hour', endHour).toDate(),
+      },
+    },
   })
 
   const availableTimes = possibleTimes.filter((time) => {
-    return !blockedTimes.some((blockedTimes) => {
-      blockedTimes.date.getHours() === time
-    })
+    const isTimeBlocked = blockedTimes.some(
+      (blockedTime) => blockedTime.date.getHours() === time,
+    )
+
+    const isTimeInPast = referenceDate.set('hour', time).isBefore(new Date())
+
+    return !isTimeBlocked && !isTimeInPast
   })
 
-  return res.status(201).json({possibleTimes, availableTimes})
+  return res.json({ possibleTimes, availableTimes })
 }
