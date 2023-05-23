@@ -1,11 +1,10 @@
-import { Box, Heading, Text, styled } from "@ignite-ui/react";
-
+import { Box, Heading, Text, styled } from '@ignite-ui/react'
 
 export const IntervalBox = styled(Box, {
   marginTop: '$6',
   display: 'flex',
   flexDirection: 'column',
-  gap: '$4'
+  gap: '$4',
 })
 
 export const IntervalContainer = styled('div', {
@@ -21,14 +20,14 @@ export const IntervalItem = styled('div', {
   padding: '$3 $4',
 
   '& + &': {
-    borderTop: '1px solid $gray600'
-  }
+    borderTop: '1px solid $gray600',
+  },
 })
 
 export const IntervalDay = styled('div', {
   display: 'flex',
   alignItems: 'center',
-  gap: '$3'
+  gap: '$3',
 })
 
 export const IntervalInputs = styled('div', {
@@ -36,6 +35,6 @@ export const IntervalInputs = styled('div', {
   alignItems: 'center',
   gap: '$2',
   'input::-webkit-calendar-picker-indicator': {
-    filter: 'invert(100%) brightness(50%) '
-  }
+    filter: 'invert(100%) brightness(50%) ',
+  },
 })

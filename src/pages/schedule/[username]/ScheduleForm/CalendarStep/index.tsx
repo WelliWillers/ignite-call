@@ -1,73 +1,93 @@
-import { Calendar } from "@/components/Calendar";
-import { Container, TimePicker, TimePickerHeader, TimePickerItem, TimePickerList } from "./styles";
-import { useState } from "react";
-import dayjs from "dayjs";
-import { useRouter } from "next/router";
-import { api } from "@/lib/axios";
-import { useQuery } from "@tanstack/react-query";
+import { Calendar } from '@/components/Calendar'
+import {
+  Container,
+  TimePicker,
+  TimePickerHeader,
+  TimePickerItem,
+  TimePickerList,
+} from './styles'
+import { useState } from 'react'
+import dayjs from 'dayjs'
+import { useRouter } from 'next/router'
+import { api } from '@/lib/axios'
+import { useQuery } from '@tanstack/react-query'
 
 interface Availability {
-    possibleTimes: number[];
-    availableTimes: number[];
+  possibleTimes: number[]
+  availableTimes: number[]
 }
 
 interface CalendarStepProps {
-    onSelectDateTime: (date: Date) => void;
+  onSelectDateTime: (date: Date) => void
 }
 
-export default function CalendarStep({onSelectDateTime}: CalendarStepProps){
-    const [ selectedDate, setSelectedDate ] = useState<Date | null>(null)
+export default function CalendarStep({ onSelectDateTime }: CalendarStepProps) {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
-    const route = useRouter()
-    const isDaySelected = !!selectedDate
-    
-    const weekDay = selectedDate ? dayjs(selectedDate).format('dddd') : null
-    const dayDescription= selectedDate ? dayjs(selectedDate).format('DD[ de ]MMMM') : null
+  const route = useRouter()
+  const isDaySelected = !!selectedDate
 
-    const dateWithoutTime = selectedDate ? dayjs(selectedDate).format('YYYY-MM-DD') : null
+  const weekDay = selectedDate ? dayjs(selectedDate).format('dddd') : null
+  const dayDescription = selectedDate
+    ? dayjs(selectedDate).format('DD[ de ]MMMM')
+    : null
 
-    const { data: availability } = useQuery<Availability>(['availability', dateWithoutTime], async () => {
-        const response = await api.get(`users/${String(route.query.username)}/availability`, {
-            params: {
-                date: dateWithoutTime,
-            }
-        })
+  const dateWithoutTime = selectedDate
+    ? dayjs(selectedDate).format('YYYY-MM-DD')
+    : null
 
-        return response.data
-    }, {
-        enabled: !!selectedDate
-    })
+  const { data: availability } = useQuery<Availability>(
+    ['availability', dateWithoutTime],
+    async () => {
+      const response = await api.get(
+        `users/${String(route.query.username)}/availability`,
+        {
+          params: {
+            date: dateWithoutTime,
+          },
+        },
+      )
 
-    function handleSelectTime(hour: number){
-        const dateWithTime = dayjs(selectedDate).set('hour', hour).startOf('hour').toDate()
+      return response.data
+    },
+    {
+      enabled: !!selectedDate,
+    },
+  )
 
-        onSelectDateTime(dateWithTime)
-    }
+  function handleSelectTime(hour: number) {
+    const dateWithTime = dayjs(selectedDate)
+      .set('hour', hour)
+      .startOf('hour')
+      .toDate()
 
-    return (
-        <Container isTimePickerOpen={isDaySelected}>
-            <Calendar selectedDate={selectedDate} onDateSelected={setSelectedDate}  />
+    onSelectDateTime(dateWithTime)
+  }
 
-            {
-                isDaySelected && (
-                    <TimePicker >
-                        <TimePickerHeader>
-                            {weekDay}, <span>{dayDescription} </span>
-                        </TimePickerHeader>
-                        <TimePickerList>
-                            {
-                                availability?.possibleTimes.map((hour) => {
-                                    return (
-                                      <TimePickerItem onClick={() => handleSelectTime(hour)} key={hour} disabled={!availability.availableTimes.includes(hour)} >
-                                        {String(hour).padStart(2, "0")}:00h
-                                      </TimePickerItem>
-                                    );
-                                })
-                            }
-                        </TimePickerList>
-                    </TimePicker>
-                )
-            }
-        </Container>
-    );
+  return (
+    <Container isTimePickerOpen={isDaySelected}>
+      <Calendar selectedDate={selectedDate} onDateSelected={setSelectedDate} />
+
+      {isDaySelected && (
+        <TimePicker>
+          <TimePickerHeader>
+            {weekDay}, <span>{dayDescription} </span>
+          </TimePickerHeader>
+          <TimePickerList>
+            {availability?.possibleTimes.map((hour) => {
+              return (
+                <TimePickerItem
+                  onClick={() => handleSelectTime(hour)}
+                  key={hour}
+                  disabled={!availability.availableTimes.includes(hour)}
+                >
+                  {String(hour).padStart(2, '0')}:00h
+                </TimePickerItem>
+              )
+            })}
+          </TimePickerList>
+        </TimePicker>
+      )}
+    </Container>
+  )
 }

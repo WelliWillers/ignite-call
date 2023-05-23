@@ -1,24 +1,28 @@
 import { prisma } from '@/lib/prisma'
-import { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth';
-import { buildNextAuthOptions } from '../auth/[...nextauth].api';
-import { z } from 'zod';
+import { NextApiRequest, NextApiResponse } from 'next'
+import { getServerSession } from 'next-auth'
+import { buildNextAuthOptions } from '../auth/[...nextauth].api'
+import { z } from 'zod'
 
 const updateProfileBodySchema = z.object({
-  bio: z.string()
+  bio: z.string(),
 })
 
 export default async function handle(
   req: NextApiRequest,
-  res: NextApiResponse
-){
-  if(req.method != 'PUT'){
+  res: NextApiResponse,
+) {
+  if (req.method != 'PUT') {
     return res.status(400).end()
   }
 
-  const session = await getServerSession(req, res, buildNextAuthOptions(req, res))
+  const session = await getServerSession(
+    req,
+    res,
+    buildNextAuthOptions(req, res),
+  )
 
-  if(!session){
+  if (!session) {
     return res.status(401).end()
   }
 
@@ -26,12 +30,12 @@ export default async function handle(
 
   await prisma.user.update({
     where: {
-      id: session.user.id
+      id: session.user.id,
     },
     data: {
-      bio
-    }
+      bio,
+    },
   })
-  
+
   return res.status(204).end()
 }

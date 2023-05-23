@@ -1,19 +1,19 @@
-import { Box, Heading, Text, styled } from "@ignite-ui/react";
+import { Box, Heading, Text, styled } from '@ignite-ui/react'
 
 export const Container = styled('main', {
   maxWidth: 572,
   margin: '$20 auto $4',
-  padding: '0 $4'
+  padding: '0 $4',
 })
 
 export const Header = styled('div', {
   padding: '0 $6',
   [`> ${Heading}`]: {
-    lineHeight: '$base'
+    lineHeight: '$base',
   },
   [`> ${Text}`]: {
     color: '$gray200',
-    marginBottom: '$4'
+    marginBottom: '$4',
   },
 })
 
@@ -27,9 +27,9 @@ export const Form = styled(Box, {
     display: 'flex',
     flexDirection: 'column',
     gap: '$2',
-  }
+  },
 })
 
 export const FormError = styled(Text, {
-  color: '#f75a68'
+  color: '#f75a68',
 })

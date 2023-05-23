@@ -1,14 +1,14 @@
-import { Heading, Text } from "@ignite-ui/react";
-import { Container, Hero, Preview } from "./styles";
+import { Heading, Text } from '@ignite-ui/react'
+import { Container, Hero, Preview } from './styles'
 import previewImage from '../../assets/app-preview.png'
-import Image from "next/image";
-import ClaimUserNameForm from "./components/ClaimUserNameForm";
-import { NextSeo } from "next-seo";
+import Image from 'next/image'
+import ClaimUserNameForm from './components/ClaimUserNameForm'
+import { NextSeo } from 'next-seo'
 
 export default function Home() {
   return (
     <>
-      <NextSeo 
+      <NextSeo
         title="Descomplique sua agenda | Ignite call"
         description="Conecte seu calendário e permita que as pessoas marquem agendamentos no seu tempo livre."
       />
@@ -19,13 +19,19 @@ export default function Home() {
             Conecte seu calendário e permita que as pessoas marquem agendamentos
             no seu tempo livre.
           </Text>
-          <ClaimUserNameForm/>
+          <ClaimUserNameForm />
         </Hero>
 
         <Preview>
-          <Image src={previewImage} alt="Pré-visualização do app" height={400} quality={100} priority />
+          <Image
+            src={previewImage}
+            alt="Pré-visualização do app"
+            height={400}
+            quality={100}
+            priority
+          />
         </Preview>
       </Container>
     </>
-  );
+  )
 }

@@ -7,7 +7,7 @@ export const Container = styled('div', {
   gap: '$20',
   height: '100vh',
   maxWidth: 'calc(100vw - (100vw - 1160px) / 2)',
-  marginLeft: 'auto'
+  marginLeft: 'auto',
 })
 
 export const Hero = styled('div', {
@@ -15,18 +15,18 @@ export const Hero = styled('div', {
   padding: '0 $10',
   [`> ${Heading}`]: {
     '@media(max-width:600px)': {
-      fontSize: '$6xl'
-    }
+      fontSize: '$6xl',
+    },
   },
   [`> ${Text}`]: {
     marginTop: '$2',
-    color: '$gray200'
-  }
+    color: '$gray200',
+  },
 })
 export const Preview = styled('div', {
   paddingRight: '$8',
   overflow: 'hidden',
   '@media(max-width:600px)': {
-    display: 'none'
-  }
+    display: 'none',
+  },
 })
