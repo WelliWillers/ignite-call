@@ -22,7 +22,6 @@ export default async function handle(
 
 
   const session = await getServerSession(req, res, buildNextAuthOptions(req, res))
-  console.log(session)
 
   if(!session){
     return res.status(401).end()
