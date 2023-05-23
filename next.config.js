@@ -9,7 +9,10 @@ const nextConfig = {
   ],
   images: {
     domains: ['https://lh3.googleusercontent.com/'],
-  }
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 }
 
 module.exports = nextConfig

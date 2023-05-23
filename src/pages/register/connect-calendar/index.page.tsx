@@ -1,4 +1,4 @@
-import { Button, Heading, MultiStep, Text, TextInput } from '@ignite-ui/react'
+import { Button, Heading, MultiStep, Text } from '@ignite-ui/react'
 import { Container, Header } from '../styles'
 import { ArrowRight, Check } from '@phosphor-icons/react'
 import { ConnectItem, ConnectBox, AuthError } from './styles'
@@ -17,10 +17,6 @@ export default function ConnectCalendar() {
   async function handleConnectCalendar() {
     await signIn('google')
   }
-
-  // async function handleNavigateToNextStep(){
-  //   await router.push('/register/time-intervals')
-  // }
 
   return (
     <>
